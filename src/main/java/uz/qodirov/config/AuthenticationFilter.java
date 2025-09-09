@@ -6,6 +6,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import uz.qodirov.constant.StatusEnum;
+import uz.qodirov.exception.AccessDeniedException;
 import uz.qodirov.revoke_access_token.RevokeAccessTokenService;
 import uz.qodirov.user.UserEntity;
 import uz.qodirov.user.UserService;
@@ -15,7 +17,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.nio.file.AccessDeniedException;
 
 @Component
 public class AuthenticationFilter extends OncePerRequestFilter {
@@ -36,19 +37,18 @@ public class AuthenticationFilter extends OncePerRequestFilter {
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             String token = authHeader.substring(7);
             if (tokenUtil.validateToken(token) && !revokeAccessTokenService.isRevoked(token)) {
-                String userId = tokenUtil.getUsernameFromToken(token);
-                UserEntity userEntity;
                 try {
-                    userEntity = userService.findById(userId);
+                    String userId = tokenUtil.getUsernameFromToken(token);
+                    UserEntity userEntity = userService.findById(userId);
+                    UserDetailsImpl userDetails = new UserDetailsImpl(userEntity);
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+                    authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
                 } catch (Exception e) {
-                    throw new AccessDeniedException("User not found");
+                    throw new AccessDeniedException(StatusEnum.INTERNAL_SERVER_ERROR, null);
                 }
-                UserDetailsImpl userDetails = new UserDetailsImpl(userEntity);
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
-                throw new AccessDeniedException("Token expired!");
+                throw new AccessDeniedException(StatusEnum.TOKEN_EXPIRED, null);
             }
         }
         chain.doFilter(request, response);

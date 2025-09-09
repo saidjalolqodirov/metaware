@@ -18,7 +18,6 @@ import uz.qodirov.user.dto.UserRequest;
 import uz.qodirov.user.dto.UserUpdateRequest;
 
 import java.util.HashMap;
-import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -34,14 +33,7 @@ public class UserServiceImpl extends JpaGenericServiceImpl<UserEntity, String> i
         log.info("=========== UserServiceImpl.create ==========");
         UserEntity user = new UserEntity();
         check(request);
-        user.setUsername(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user.setFirstName(request.getFirstName());
-        user.setLastName(request.getLastName());
-        user.setPhone(request.getPhone());
-        user.setRole(request.getRole());
-        user.setStatus(request.getStatus());
-        user.setImage(request.getImageId() == null ? null : fileService.findById(request.getImageId()));
+        requestToModel(user, request);
         return save(user);
     }
 
@@ -49,23 +41,10 @@ public class UserServiceImpl extends JpaGenericServiceImpl<UserEntity, String> i
     public UserEntity update(UserUpdateRequest request) {
         log.info("============ UserServiceImpl.update==========");
         UserEntity user = findById(request.getId());
-        if (request.getUsername() != null && !request.getUsername().isBlank() && !Objects.equals(request.getUsername().trim(), user.getUsername().trim())) {
-            if (repository.findFirstByUsername(request.getUsername()).isEmpty()) {
-                user.setUsername(request.getUsername());
-            } else {
-                throw new UsernameAlreadyExistException(StatusEnum.USERNAME_ALREADY_EXIST,
-                        new HashMap<>() {{
-                            put("username", request.getUsername());
-                        }});
-            }
-        }
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
-        user.setRole(request.getRole());
         user.setPhone(request.getPhone());
-        user.setStatus(request.getStatus());
         user.setImage(request.getImageId() == null ? null : fileService.findById(request.getImageId()));
-        user.setPrivileges(request.getPrivileges());
         return save(user);
     }
 
@@ -79,6 +58,18 @@ public class UserServiceImpl extends JpaGenericServiceImpl<UserEntity, String> i
         }
         UserEntity user = findById(id);
         user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        return save(user);
+    }
+
+    @Override
+    public UserEntity changeUsername(String id, ChangeUsernameRequest request) {
+        UserEntity user = findById(id);
+        findFirstByUsername(request.getUsername()).ifPresent(u -> {
+            throw new UsernameAlreadyExistException(StatusEnum.VALIDATION_ERROR, new HashMap<>() {{
+                put("message", "Username already exist");
+            }});
+        });
+        user.setUsername(request.getUsername());
         return save(user);
     }
 
@@ -97,11 +88,30 @@ public class UserServiceImpl extends JpaGenericServiceImpl<UserEntity, String> i
         return this.repository;
     }
 
+    private void requestToModel(UserEntity user, UserRequest request) {
+        user.setUsername(request.getUsername());
+        user.setEmail(request.getEmail());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
+        user.setPhone(request.getPhone());
+        user.setRole(request.getRole());
+        user.setStatus(request.getStatus());
+        user.setImage(request.getImageId() == null ? null : fileService.findById(request.getImageId()));
+    }
+
     private void check(UserRequest request) {
         if (findFirstByUsername(request.getUsername()).isPresent()) {
             throw new UsernameAlreadyExistException(StatusEnum.USERNAME_ALREADY_EXIST,
                     new HashMap<>() {{
                         put("username", request.getUsername());
+                    }});
+        }
+
+        if (repository.existsByEmailAndDeletedFalse(request.getEmail())) {
+            throw new BadRequestException(StatusEnum.EMAIL_ALREADY_EXIST,
+                    new HashMap<>() {{
+                        put("email", request.getEmail());
                     }});
         }
 

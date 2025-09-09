@@ -13,7 +13,6 @@ import uz.qodirov.user.UserConverter;
 import uz.qodirov.user.UserService;
 import uz.qodirov.user.dto.UserDto;
 
-
 @RestController
 @RequestMapping(PathNames.API + "profile")
 @Tag(name = "Profile controller")

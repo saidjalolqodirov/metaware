@@ -17,7 +17,6 @@ public class UserConverter extends Converter<UserDto, UserEntity> {
                         userEntity.getImageId(),
                         userEntity.getRole(),
                         userEntity.getStatus(),
-                        userEntity.getPrivileges(),
                         userEntity.getCreatedDate(),
                         userEntity.getModifiedDate()
                 ));

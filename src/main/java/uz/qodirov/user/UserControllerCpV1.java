@@ -9,7 +9,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import uz.qodirov.constant.PathNames;
-import uz.qodirov.constant.Privilege;
 import uz.qodirov.generic.SearchSpecification;
 import uz.qodirov.payload.PageableRequest;
 import uz.qodirov.user.dto.ChangePasswordRequest;
@@ -45,37 +44,37 @@ public class UserControllerCpV1 {
         return ResponseEntity.ok(userConverter.convertFromEntity(userService.update(request)));
     }
 
-    @PutMapping("change-password/{id}")
+    @PutMapping("/change-password/{id}")
     @Operation(security = {@SecurityRequirement(name = "bearerAuth")})
     public ResponseEntity<UserDto> changePassword(@PathVariable String id,
                                                   @Valid @RequestBody ChangePasswordRequest request) {
         return ResponseEntity.ok(userConverter.convertFromEntity(userService.changePassword(id, request)));
     }
 
-    @PostMapping("pageable")
+    @PutMapping("/change-username/{id}")
+    @Operation(security = {@SecurityRequirement(name = "bearerAuth")})
+    public ResponseEntity<UserDto> changeUsername(@PathVariable String id,
+                                                  @Valid @RequestBody ChangeUsernameRequest request) {
+        return ResponseEntity.ok(userConverter.convertFromEntity(userService.changeUsername(id, request)));
+    }
+
+    @PostMapping("/pageable")
     @Operation(security = {@SecurityRequirement(name = "bearerAuth")})
     public ResponseEntity<Page<UserDto>> pageable(@Valid @RequestBody PageableRequest request) {
         PageRequest pageRequest = PageableUtil.pageRequest(request);
         return ResponseEntity.ok(userConverter.createFromEntities(userService.findAll(new SearchSpecification<>(request.getSearch()), pageRequest)));
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     @Operation(security = {@SecurityRequirement(name = "bearerAuth")})
     public ResponseEntity<UserDto> getOne(@PathVariable String id) {
         return ResponseEntity.ok(userConverter.convertFromEntity(userService.findById(id)));
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     @Operation(security = {@SecurityRequirement(name = "bearerAuth")})
     public ResponseEntity<Void> delete(@PathVariable String id) {
         userService.delete(id);
         return ResponseEntity.ok(null);
     }
-
-    @GetMapping("/privileges")
-    @Operation(security = {@SecurityRequirement(name = "bearerAuth")}, summary = "Получить все привилегии")
-    public ResponseEntity<Privilege[]> allPrivileges() {
-        return ResponseEntity.ok(Privilege.values());
-    }
-
 }

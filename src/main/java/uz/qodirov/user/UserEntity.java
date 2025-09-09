@@ -1,19 +1,18 @@
 package uz.qodirov.user;
 
+import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.*;
 import org.hibernate.annotations.*;
-import uz.qodirov.constant.Privilege;
 import uz.qodirov.constant.Role;
 import uz.qodirov.constant.Status;
 import uz.qodirov.file.FileEntity;
 import uz.qodirov.generic.GenericAuditingEntity;
 import uz.qodirov.generic.SequenceKsuidGenerator;
 
-import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.ArrayList;
-import java.util.Collection;
+import javax.persistence.*;
+import java.util.HashMap;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -24,6 +23,9 @@ import java.util.Collection;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@TypeDefs({
+        @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
+})
 public class UserEntity extends GenericAuditingEntity<String> {
     @Id
     @GeneratedValue(generator = "user_seq", strategy = GenerationType.SEQUENCE)
@@ -35,7 +37,6 @@ public class UserEntity extends GenericAuditingEntity<String> {
             })
     @Column(length = 40)
     private String id;
-
 
     @Column(length = 40, nullable = false, name = "username")
     private String username;
@@ -49,6 +50,9 @@ public class UserEntity extends GenericAuditingEntity<String> {
     @Column(length = 40, name = "phone")
     private String phone;
 
+    @Column(length = 40, nullable = false, name = "email")
+    private String email;
+
     @Column(name = "password", nullable = false)
     private String password;
 
@@ -60,12 +64,6 @@ public class UserEntity extends GenericAuditingEntity<String> {
     @Column(name = "image_id", insertable = false, updatable = false)
     private String imageId;
 
-    @ElementCollection(targetClass = Privilege.class)
-    @CollectionTable(name = "user_privilege")
-    @Column(name = "privilege", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Collection<Privilege> privileges;
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Status status;
@@ -74,10 +72,7 @@ public class UserEntity extends GenericAuditingEntity<String> {
     @Column(nullable = false, name = "role")
     private Role role;
 
-    public void addPrivilege(Privilege privilege) {
-        if (this.privileges == null) {
-            this.privileges = new ArrayList<>();
-        }
-        this.privileges.add(privilege);
-    }
+    @Type(type = "jsonb")
+    @Column(name = "additional_info", columnDefinition = "jsonb")
+    private HashMap<String, Object> additionalInfo;
 }

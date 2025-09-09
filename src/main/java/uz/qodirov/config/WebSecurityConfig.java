@@ -36,6 +36,7 @@ public class WebSecurityConfig {
                 "/v3/api-docs/**",
                 "/webjars/**",
                 PathNames.API + "auth/**",
+                PathNames.API + "file/**",
         };
         http
                 .csrf(AbstractHttpConfigurer::disable)

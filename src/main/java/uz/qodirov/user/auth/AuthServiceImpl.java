@@ -8,6 +8,9 @@ import org.springframework.stereotype.Service;
 import uz.qodirov.config.TokenUtil;
 import uz.qodirov.config.UserDetailsImpl;
 import uz.qodirov.constant.Status;
+import uz.qodirov.constant.StatusEnum;
+import uz.qodirov.exception.BadRequestException;
+import uz.qodirov.exception.DataNotFoundException;
 import uz.qodirov.exception.UserNotActivatedException;
 import uz.qodirov.user.UserEntity;
 import uz.qodirov.user.UserRepository;
@@ -39,10 +42,10 @@ public class AuthServiceImpl implements AuthService {
                 throw new UserNotActivatedException(signInRequest.getUsername());
             }
             if (!passwordEncoder.matches(signInRequest.getPassword(), optional.get().getPassword())) {
-                throw new BadCredentialsException(signInRequest.getUsername());
+                throw new BadRequestException(StatusEnum.USERNAME_OR_PASSWORD_NOT_MATCH, null);
             }
         } else {
-            throw new BadCredentialsException(signInRequest.getUsername());
+            throw new DataNotFoundException(StatusEnum.USER_NOT_FOUND, null);
         }
         return createAuthResponse(optional.get());
     }

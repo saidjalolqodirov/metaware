@@ -22,7 +22,7 @@ public class AuthControllerCpV1 {
         this.authService = authService;
     }
 
-    @PostMapping("sign_in")
+    @PostMapping("/sign_in")
     public ResponseEntity<AuthResponse> signIn(@RequestBody SignInRequest signInRequest) throws DataNotFoundException {
         AuthResponse authResponse = authService.signIn(signInRequest);
         return ResponseEntity.ok(authResponse);

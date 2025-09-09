@@ -27,7 +27,7 @@ public class DataLoader implements CommandLineRunner {
             user.setRole(Role.ADMIN);
             user.setFirstName("admin");
             user.setLastName("admin");
-            user.setStatus(Status.ACTIVE);
+            user.setEmail("admin@gmail.com");
             userRepository.save(user);
         }
     }

@@ -20,6 +20,10 @@ public enum StatusEnum {
     CONNECTION_TIME_OUT(new Status("___009", "Connection time out"), 422),
 
     USERNAME_ALREADY_EXIST(new Status("110101", "username already exist"), 422),
+    EMAIL_ALREADY_EXIST(new Status("110102", "email already exist"), 422),
+    USERNAME_OR_PASSWORD_NOT_MATCH(new Status("110103", "username or password not match"), 422),
+    TOKEN_EXPIRED(new Status("110104", "token expired"), 422),
+    USER_NOT_FOUND(new Status("110105", "user not found"), 422),
 
     ;
     private final Status status;

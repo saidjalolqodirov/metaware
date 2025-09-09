@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface UserRepository extends JpaGenericRepository<UserEntity, String> {
     Optional<UserEntity> findFirstByUsername(String username);
+
+    boolean existsByEmailAndDeletedFalse(String email);
 }

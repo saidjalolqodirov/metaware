@@ -7,12 +7,14 @@ import uz.qodirov.constant.Privilege;
 import uz.qodirov.constant.Status;
 import uz.qodirov.user.UserEntity;
 
+import java.io.Serial;
 import java.util.ArrayList;
 import java.util.Collection;
 
 @Getter
 public class UserDetailsImpl implements UserDetails {
 
+    @Serial
     private static final long serialVersionUID = 5377255672157361226L;
 
     private final UserEntity user;
@@ -21,11 +23,7 @@ public class UserDetailsImpl implements UserDetails {
 
     public UserDetailsImpl(UserEntity user) {
         this.user = user;
-        if (user != null) {
-            authorities = user.getPrivileges();
-        } else {
-            authorities = new ArrayList<>();
-        }
+        authorities = new ArrayList<>();
     }
 
     public String getId() {

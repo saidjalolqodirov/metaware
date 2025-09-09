@@ -15,6 +15,8 @@ public interface UserService extends JpaGenericService<UserEntity, String> {
 
     UserEntity changePassword(String id, ChangePasswordRequest request);
 
+    UserEntity changeUsername(String id, ChangeUsernameRequest request);
+
     UserEntity getMe() throws DataNotFoundException;
 
 }
