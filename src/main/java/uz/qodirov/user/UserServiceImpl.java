@@ -39,12 +39,17 @@ public class UserServiceImpl extends JpaGenericServiceImpl<UserEntity, String> i
 
     @Override
     public UserEntity update(UserUpdateRequest request) {
-        log.info("============ UserServiceImpl.update==========");
+        log.info("User update request: {}", request);
         UserEntity user = findById(request.getId());
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
+        user.setMiddleName(request.getMiddleName());
         user.setPhone(request.getPhone());
-        user.setImage(request.getImageId() == null ? null : fileService.findById(request.getImageId()));
+        user.setEmail(request.getEmail());
+        if (request.getImageId() != null) {
+            user.setImage(fileService.findById(request.getImageId()));
+        }
+        user.setAdditionalInfo(request.getAdditionalInfo());
         return save(user);
     }
 
@@ -84,6 +89,11 @@ public class UserServiceImpl extends JpaGenericServiceImpl<UserEntity, String> i
     }
 
     @Override
+    public UserEntity findByUsername(String username) throws DataNotFoundException {
+        return findFirstByUsername(username).orElse(null);
+    }
+
+    @Override
     protected JpaGenericRepository<UserEntity, String> getRepository() {
         return this.repository;
     }
@@ -96,7 +106,6 @@ public class UserServiceImpl extends JpaGenericServiceImpl<UserEntity, String> i
         user.setLastName(request.getLastName());
         user.setPhone(request.getPhone());
         user.setRole(request.getRole());
-        user.setStatus(request.getStatus());
         user.setImage(request.getImageId() == null ? null : fileService.findById(request.getImageId()));
     }
 

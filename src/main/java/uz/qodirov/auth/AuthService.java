@@ -1,4 +1,4 @@
-package uz.qodirov.user.auth;
+package uz.qodirov.auth;
 
 import uz.qodirov.user.dto.AuthResponse;
 import uz.qodirov.user.dto.SignInRequest;
@@ -9,4 +9,5 @@ public interface AuthService {
 
     void logout(TokensRequest tokensRequest);
 
+    AuthResponse signUp(SignUpRequest request);
 }

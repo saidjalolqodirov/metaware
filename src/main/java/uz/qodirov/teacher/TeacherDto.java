@@ -1,32 +1,26 @@
-package uz.qodirov.user.dto;
+package uz.qodirov.teacher;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-import javax.validation.constraints.NotNull;
 import java.util.HashMap;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserUpdateRequest {
-
-    @NotNull
+public class TeacherDto {
     private String id;
-
     private String firstName;
-
     private String lastName;
-
     private String middleName;
-
-    private String phone;
-
+    private String username;
     private String email;
-
+    private String phone;
     private String imageId;
-
     private HashMap<String, Object> additionalInfo;
-
+    private Long createdDate;
+    private Long modifiedDate;
 }

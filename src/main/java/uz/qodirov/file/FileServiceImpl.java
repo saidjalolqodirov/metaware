@@ -69,13 +69,14 @@ public class FileServiceImpl extends JpaGenericServiceImpl<FileEntity, String> i
     }
 
     @Override
-    public ResponseEntity<Resource> download(String fileName, HttpServletRequest request) throws DataNotFoundException {
-        Resource resource = loadFileAsResource(fileName);
+    public ResponseEntity<Resource> download(String id, HttpServletRequest request) throws DataNotFoundException {
+        FileEntity file = findById(id);
+        Resource resource = loadFileAsResource(file.getFileName());
         String contentType;
         try {
             contentType = request.getServletContext().getMimeType(resource.getFile().getAbsolutePath());
             if (contentType == null) {
-                String[] parts = fileName.split("\\.");
+                String[] parts = file.getFileName().split("\\.");
                 FileEntity fileEntity = fileRepository.findByGuidAndDeletedFalse(parts[0]);
                 contentType = fileEntity.getType();
             }

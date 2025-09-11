@@ -19,4 +19,5 @@ public interface UserService extends JpaGenericService<UserEntity, String> {
 
     UserEntity getMe() throws DataNotFoundException;
 
+    UserEntity findByUsername(String username) throws DataNotFoundException;
 }

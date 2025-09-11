@@ -1,4 +1,4 @@
-package uz.qodirov.user.auth;
+package uz.qodirov.auth;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -16,11 +16,11 @@ import uz.qodirov.user.dto.UserDto;
 @RestController
 @RequestMapping(PathNames.API + "profile")
 @Tag(name = "Profile controller")
-public class ProfileControllerCpV1 {
+public class ProfileController {
     private final UserService userService;
     private final UserConverter userConverter;
 
-    public ProfileControllerCpV1(UserService userService, UserConverter userConverter) {
+    public ProfileController(UserService userService, UserConverter userConverter) {
         this.userService = userService;
         this.userConverter = userConverter;
     }

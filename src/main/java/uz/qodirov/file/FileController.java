@@ -28,9 +28,9 @@ public class FileController {
         this.fileConverter = fileConverter;
     }
 
-    @PostMapping
-    public ResponseEntity<FileDto> create(MultipartFile uploadedFile) throws IOException {
-        return ResponseEntity.ok(fileConverter.convertFromEntity(fileService.create(uploadedFile)));
+    @PostMapping("/upload")
+    public ResponseEntity<FileDto> create(MultipartFile file) throws IOException {
+        return ResponseEntity.ok(fileConverter.convertFromEntity(fileService.create(file)));
     }
 
     @GetMapping("/{id}")
@@ -45,9 +45,9 @@ public class FileController {
                 fileConverter.createFromEntities(fileService.findAll(new SearchSpecification<>(pageable.getSearch()), pageRequest)));
     }
 
-    @GetMapping("/download/{fileName}")
-    public ResponseEntity<Resource> download(@PathVariable("fileName") String fileName, HttpServletRequest request) throws DataNotFoundException {
-        return fileService.download(fileName, request);
+    @GetMapping("/download/{id}")
+    public ResponseEntity<Resource> download(@PathVariable("id") String id, HttpServletRequest request) throws DataNotFoundException {
+        return fileService.download(id, request);
     }
 
     @DeleteMapping("/{id}")

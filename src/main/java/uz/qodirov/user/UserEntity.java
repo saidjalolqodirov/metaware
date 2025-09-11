@@ -47,6 +47,9 @@ public class UserEntity extends GenericAuditingEntity<String> {
     @Column(length = 40, name = "last_name")
     private String lastName;
 
+    @Column(length = 40, name = "middle_name")
+    private String middleName;
+
     @Column(length = 40, name = "phone")
     private String phone;
 

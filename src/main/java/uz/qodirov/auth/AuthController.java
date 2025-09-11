@@ -1,4 +1,4 @@
-package uz.qodirov.user.auth;
+package uz.qodirov.auth;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
@@ -12,19 +12,28 @@ import uz.qodirov.user.dto.AuthResponse;
 import uz.qodirov.user.dto.SignInRequest;
 import uz.qodirov.user.dto.TokensRequest;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(PathNames.API + "auth")
-@Tag(name = "Auth controller (CP)")
-public class AuthControllerCpV1 {
+@Tag(name = "Auth controller")
+public class AuthController {
     private final AuthService authService;
 
-    public AuthControllerCpV1(AuthService authService) {
+    public AuthController(AuthService authService) {
         this.authService = authService;
     }
 
     @PostMapping("/sign_in")
     public ResponseEntity<AuthResponse> signIn(@RequestBody SignInRequest signInRequest) throws DataNotFoundException {
         AuthResponse authResponse = authService.signIn(signInRequest);
+        return ResponseEntity.ok(authResponse);
+    }
+
+    // for-students
+    @PostMapping("/sign_up")
+    public ResponseEntity<AuthResponse> signUp(@RequestBody @Valid SignUpRequest request) throws DataNotFoundException {
+        AuthResponse authResponse = authService.signUp(request);
         return ResponseEntity.ok(authResponse);
     }
 

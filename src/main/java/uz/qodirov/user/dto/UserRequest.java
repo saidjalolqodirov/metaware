@@ -32,13 +32,12 @@ public class UserRequest {
     @NotEmpty
     private String lastName;
 
+    private String middleName;
+
     private String phone;
 
     @NotNull(message = "Role is null")
     private Role role;
-
-    @NotNull(message = "status is null")
-    private Status status;
 
     private String imageId;
 

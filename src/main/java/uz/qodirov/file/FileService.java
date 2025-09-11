@@ -15,7 +15,7 @@ public interface FileService extends JpaGenericService<FileEntity, String> {
 
     Resource loadFileAsResource(String fileName) throws DataNotFoundException;
 
-    ResponseEntity<Resource> download(String fileName, HttpServletRequest request) throws DataNotFoundException;
+    ResponseEntity<Resource> download(String id, HttpServletRequest request) throws DataNotFoundException;
 
     void deleteFile(String id) throws DataNotFoundException, IOException;
 }
