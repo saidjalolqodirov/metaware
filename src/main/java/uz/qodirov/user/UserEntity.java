@@ -9,10 +9,11 @@ import uz.qodirov.file.FileEntity;
 import uz.qodirov.generic.GenericAuditingEntity;
 import uz.qodirov.generic.SequenceKsuidGenerator;
 
+import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import javax.persistence.*;
 import java.util.HashMap;
+import java.util.Objects;
 
 @EqualsAndHashCode(callSuper = true)
 @Entity
@@ -78,4 +79,17 @@ public class UserEntity extends GenericAuditingEntity<String> {
     @Type(type = "jsonb")
     @Column(name = "additional_info", columnDefinition = "jsonb")
     private HashMap<String, Object> additionalInfo;
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        UserEntity that = (UserEntity) o;
+        return Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), id);
+    }
 }
