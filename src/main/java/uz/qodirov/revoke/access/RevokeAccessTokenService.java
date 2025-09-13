@@ -1,4 +1,4 @@
-package uz.qodirov.revoke_access_token;
+package uz.qodirov.revoke.access;
 
 import uz.qodirov.generic.JpaGenericService;
 

@@ -1,4 +1,4 @@
-package uz.qodirov.revoke_refresh_token;
+package uz.qodirov.revoke.refresh;
 
 import org.springframework.stereotype.Repository;
 import uz.qodirov.generic.JpaGenericRepository;

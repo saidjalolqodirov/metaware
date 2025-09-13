@@ -1,4 +1,4 @@
-package uz.qodirov.revoke_access_token;
+package uz.qodirov.revoke.refresh;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,34 +11,34 @@ import uz.qodirov.generic.GenericEntity;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "revoke_access_token")
+@Table(name = "revoke_refresh_token")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
 @EntityListeners(AuditingEntityListener.class)
-public class RevokeAccessTokenEntity implements GenericEntity<String> {
+public class RevokeRefreshTokenEntity implements GenericEntity<String> {
 
     @Id
-    @Column(name = "access_token", unique = true)
-    private String accessToken;
+    @Column(name = "refresh_token", unique = true)
+    private String refreshToken;
 
     @CreatedDate
-    @Column(name = "created_date", nullable = false)
+    @Column(name = "created_date")
     private Long createdDate;
 
 
     @Column(name = "user_id")
     private String userId;
 
-    public RevokeAccessTokenEntity(String accessToken, String userId) {
-        this.accessToken = accessToken;
+    public RevokeRefreshTokenEntity(String refreshToken, String userId) {
+        this.refreshToken = refreshToken;
         this.userId = userId;
     }
 
     @Override
     public String getId() {
-        return accessToken;
+        return refreshToken;
     }
 
     @Override

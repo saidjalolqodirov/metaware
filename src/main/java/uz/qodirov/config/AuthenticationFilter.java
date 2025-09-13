@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import uz.qodirov.constant.StatusEnum;
 import uz.qodirov.exception.AccessDeniedException;
-import uz.qodirov.revoke_access_token.RevokeAccessTokenService;
+import uz.qodirov.revoke.access.RevokeAccessTokenService;
 import uz.qodirov.user.UserEntity;
 import uz.qodirov.user.UserService;
 

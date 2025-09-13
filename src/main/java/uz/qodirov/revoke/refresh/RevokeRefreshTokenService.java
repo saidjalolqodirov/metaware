@@ -1,4 +1,4 @@
-package uz.qodirov.revoke_refresh_token;
+package uz.qodirov.revoke.refresh;
 
 
 import uz.qodirov.generic.JpaGenericService;

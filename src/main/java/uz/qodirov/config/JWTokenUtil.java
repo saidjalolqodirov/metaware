@@ -7,8 +7,8 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import uz.qodirov.exception.TokenExpiredException;
-import uz.qodirov.revoke_access_token.RevokeAccessTokenService;
-import uz.qodirov.revoke_refresh_token.RevokeRefreshTokenService;
+import uz.qodirov.revoke.access.RevokeAccessTokenService;
+import uz.qodirov.revoke.refresh.RevokeRefreshTokenService;
 
 import javax.crypto.SecretKey;
 import java.util.Date;
