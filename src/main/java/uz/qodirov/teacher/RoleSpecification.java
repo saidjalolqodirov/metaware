@@ -10,15 +10,15 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-public class TeacherSpecification implements Specification<UserEntity> {
+public class RoleSpecification implements Specification<UserEntity> {
     private final Role role;
 
-    public TeacherSpecification(Role role) {
+    public RoleSpecification(Role role) {
         this.role = role;
     }
 
     @Override
     public Predicate toPredicate(Root<UserEntity> root, @Nullable CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
-        return criteriaBuilder.and(criteriaBuilder.greaterThanOrEqualTo(root.get("role"), role));
+        return criteriaBuilder.and(criteriaBuilder.equal(root.get("role"), role));
     }
 }

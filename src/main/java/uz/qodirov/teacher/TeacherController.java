@@ -47,10 +47,9 @@ public class TeacherController {
     @Operation(security = {@SecurityRequirement(name = "bearerAuth")})
     public ResponseEntity<Page<TeacherDto>> getAll(@RequestBody @Valid PageableRequest pageable) {
         PageRequest pageRequest = PageableUtil.pageRequest(pageable);
-        TeacherSpecification teacherSpecification = new TeacherSpecification(Role.TEACHER);
+        RoleSpecification roleSpecification = new RoleSpecification(Role.TEACHER);
         return ResponseEntity.ok(
-                convertor.createFromEntities(teacherService.findAll(teacherSpecification.and(new SearchSpecification<>(pageable.getSearch())), pageRequest)));
+                convertor.createFromEntities(teacherService.findAll(roleSpecification.and(new SearchSpecification<>(pageable.getSearch())), pageRequest)));
     }
-
 
 }
