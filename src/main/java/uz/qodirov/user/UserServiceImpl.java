@@ -6,6 +6,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import uz.qodirov.config.UserDetailsImpl;
+import uz.qodirov.constant.Status;
 import uz.qodirov.constant.StatusEnum;
 import uz.qodirov.exception.BadRequestException;
 import uz.qodirov.exception.DataNotFoundException;
@@ -104,9 +105,12 @@ public class UserServiceImpl extends JpaGenericServiceImpl<UserEntity, String> i
         user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setFirstName(request.getFirstName());
         user.setLastName(request.getLastName());
+        user.setMiddleName(request.getMiddleName());
         user.setPhone(request.getPhone());
         user.setRole(request.getRole());
+        user.setStatus(Status.ACTIVE);
         user.setImage(request.getImageId() == null ? null : fileService.findById(request.getImageId()));
+        user.setAdditionalInfo(request.getAdditionalInfo());
     }
 
     private void check(UserRequest request) {

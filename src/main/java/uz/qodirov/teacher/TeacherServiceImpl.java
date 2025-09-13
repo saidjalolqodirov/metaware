@@ -62,6 +62,7 @@ public class TeacherServiceImpl implements TeacherService {
         userRequest.setMiddleName(request.getMiddleName());
         userRequest.setPhone(request.getPhone());
         userRequest.setRole(Role.TEACHER);
+        userRequest.setAdditionalInfo(request.getAdditionalInfo());
         return userRequest;
     }
 

@@ -1,5 +1,7 @@
 package uz.qodirov.teacher;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
@@ -24,21 +26,25 @@ public class TeacherController {
     }
 
     @PostMapping
+    @Operation(security = {@SecurityRequirement(name = "bearerAuth")})
     public ResponseEntity<TeacherDto> createTeacher(@RequestBody @Valid TeacherRequest request) {
         return ResponseEntity.ok(convertor.convertFromEntity(teacherService.create(request)));
     }
 
     @PutMapping("/{id}")
+    @Operation(security = {@SecurityRequirement(name = "bearerAuth")})
     public ResponseEntity<TeacherDto> update(@PathVariable String id, @RequestBody @Valid TeacherRequest request) {
         return ResponseEntity.ok(convertor.convertFromEntity(teacherService.update(id, request)));
     }
 
     @GetMapping("/{id}")
+    @Operation(security = {@SecurityRequirement(name = "bearerAuth")})
     public ResponseEntity<TeacherDto> getById(@PathVariable String id) {
         return ResponseEntity.ok(convertor.convertFromEntity(teacherService.getOne(id)));
     }
 
     @PostMapping("/pageable")
+    @Operation(security = {@SecurityRequirement(name = "bearerAuth")})
     public ResponseEntity<Page<TeacherDto>> getAll(@RequestBody @Valid PageableRequest pageable) {
         PageRequest pageRequest = PageableUtil.pageRequest(pageable);
         TeacherSpecification teacherSpecification = new TeacherSpecification(Role.TEACHER);
